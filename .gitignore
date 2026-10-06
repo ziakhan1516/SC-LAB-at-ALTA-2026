@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.pt
+*.safetensors
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+build/

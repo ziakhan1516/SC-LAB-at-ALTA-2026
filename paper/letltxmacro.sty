@@ -1,0 +1,25 @@
+% letltxmacro.sty -- local minimal reimplementation
+% The oberdiek package of this name is not present in this TeX Live install and
+% could not be fetched, but hyperref (loaded by acl.sty) requires it. This
+% provides \LetLtxMacro with the semantics hyperref relies on: copy a macro,
+% and when that macro is robust in the \DeclareRobustCommand sense (i.e. a
+% companion macro whose name ends in a space exists), copy that companion too.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{letltxmacro}[2008/06/13 v1.6-local Let assignment for LaTeX macros]
+\makeatletter
+\begingroup
+  \def\@tempa{\endgroup\def\LLM@space{ }}%
+\@tempa
+\newcommand*{\LetLtxMacro}[2]{%
+  \edef\LLM@old{\expandafter\@gobble\string#2\LLM@space}%
+  \edef\LLM@new{\expandafter\@gobble\string#1\LLM@space}%
+  \expandafter\ifx\csname\LLM@old\endcsname\relax
+    \let#1=#2%
+  \else
+    \expandafter\let\expandafter\LLM@tmp\csname\LLM@old\endcsname
+    \expandafter\let\csname\LLM@new\endcsname\LLM@tmp
+    \let#1=#2%
+  \fi
+}
+\makeatother
+\endinput
